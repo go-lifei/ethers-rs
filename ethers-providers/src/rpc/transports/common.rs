@@ -194,6 +194,7 @@ impl<'de: 'a, 'a> Deserialize<'de> for Response<'a> {
                             let value: Params = map.next_value()?;
                             params = Some(value);
                         }
+                        "meta" => {}
                         key => {
                             return Err(de::Error::unknown_field(
                                 key,

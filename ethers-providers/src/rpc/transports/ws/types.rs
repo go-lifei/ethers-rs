@@ -120,6 +120,7 @@ impl<'de> Deserialize<'de> for PubSubItem {
                             let value: Notification = map.next_value()?;
                             params = Some(value);
                         }
+                        "meta" => {}
                         key => {
                             return Err(de::Error::unknown_field(
                                 key,
