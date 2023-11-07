@@ -92,6 +92,7 @@ mod eth_tests {
         let stream = provider.subscribe_blocks().await.unwrap();
         let blocks = stream.take(3).collect::<Vec<_>>().await;
         let block = provider.get_block(BlockNumber::Latest).await.unwrap().unwrap();
+        #[cfg(not(feature = "filecoin"))]
         assert_eq!(&block, blocks.last().unwrap());
     }
 

@@ -1059,6 +1059,18 @@ impl<P: JsonRpcClient> Middleware for Provider<P> {
         self.request("eth_unsubscribe", [id.into()]).await
     }
 
+
+    #[cfg(feature = "filecoin")]
+    async fn subscribe_blocks(
+        &self,
+    ) -> Result<SubscriptionStream<'_, P, Block<Transaction>>, ProviderError>
+        where
+            P: PubsubClient,
+    {
+        self.subscribe(["newHeads"]).await
+    }
+
+    #[cfg(not(feature = "filecoin"))]
     async fn subscribe_blocks(
         &self,
     ) -> Result<SubscriptionStream<'_, P, Block<TxHash>>, ProviderError>

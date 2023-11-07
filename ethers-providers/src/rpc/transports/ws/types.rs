@@ -62,6 +62,8 @@ impl<'de> Deserialize<'de> for PubSubItem {
                 // only notification
                 let mut method = None;
                 let mut params = None;
+                #[cfg(feature = "filecoin")]
+                let mut meta = None;
 
                 while let Some(key) = map.next_key()? {
                     match key {
@@ -119,6 +121,14 @@ impl<'de> Deserialize<'de> for PubSubItem {
 
                             let value: Notification = map.next_value()?;
                             params = Some(value);
+                        }
+                        #[cfg(feature = "filecoin")]
+                        "meta" => {
+                            if meta.is_some() {
+                                return Err(de::Error::duplicate_field("meta"))
+                            }
+                            let value: Meta = map.next_value()?;
+                            meta = Some(value);
                         }
                         key => {
                             return Err(de::Error::unknown_field(
@@ -296,6 +306,7 @@ mod aliases {
 }
 
 pub use aliases::*;
+use crate::rpc::common::Meta;
 
 #[cfg(test)]
 mod test {
