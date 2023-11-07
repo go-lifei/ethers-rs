@@ -893,11 +893,22 @@ pub trait Middleware: Sync + Send + Debug {
     /// or IPC. For a polling alternative available over HTTP, use
     /// [`Middleware::watch_blocks`]. However, be aware that polling increases
     /// RPC usage drastically.
+    #[cfg(not(feature = "filecoin"))]
     async fn subscribe_blocks(
         &self,
     ) -> Result<SubscriptionStream<'_, Self::Provider, Block<TxHash>>, Self::Error>
     where
         <Self as Middleware>::Provider: PubsubClient,
+    {
+        self.inner().subscribe_blocks().await.map_err(MiddlewareError::from_err)
+    }
+
+    #[cfg(feature = "filecoin")]
+    async fn subscribe_blocks(
+        &self,
+    ) -> Result<SubscriptionStream<'_, Self::Provider, Block<Transaction>>, Self::Error>
+        where
+            <Self as Middleware>::Provider: PubsubClient,
     {
         self.inner().subscribe_blocks().await.map_err(MiddlewareError::from_err)
     }

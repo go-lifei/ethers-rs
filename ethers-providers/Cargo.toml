@@ -78,7 +78,7 @@ tempfile = "3.5.0"
 default = ["ws", "rustls"]
 celo = ["ethers-core/celo"]
 optimism = ["ethers-core/optimism"]
-
+filecoin = []
 ws = ["tokio-tungstenite", "futures-channel"]
 legacy-ws = ["ws"]
 ipc = ["tokio/io-util", "futures-channel", "winapi"]

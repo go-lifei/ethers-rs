@@ -108,6 +108,11 @@ pub struct Params<'a> {
     #[serde(borrow)]
     pub result: &'a RawValue,
 }
+#[cfg(feature = "filecoin")]
+#[derive(Deserialize, Debug, Clone)]
+pub struct Meta {
+    pub SpanContext: String
+}
 
 // FIXME: ideally, this could be auto-derived as an untagged enum, but due to
 // https://github.com/serde-rs/serde/issues/1183 this currently fails
@@ -139,6 +144,8 @@ impl<'de: 'a, 'a> Deserialize<'de> for Response<'a> {
                 // only notification
                 let mut method = None;
                 let mut params = None;
+                #[cfg(feature = "filecoin")]
+                let mut meta = None;
 
                 while let Some(key) = map.next_key()? {
                     match key {
@@ -194,7 +201,14 @@ impl<'de: 'a, 'a> Deserialize<'de> for Response<'a> {
                             let value: Params = map.next_value()?;
                             params = Some(value);
                         }
-                        "meta" => {}
+                        #[cfg(feature = "filecoin")]
+                        "meta" => {
+                            if meta.is_some() {
+                                return Err(de::Error::duplicate_field("meta"))
+                            }
+                            let value:Meta = map.next_value()?;
+                            meta = Some(value);
+                        }
                         key => {
                             return Err(de::Error::unknown_field(
                                 key,
