@@ -24,7 +24,7 @@ all-features = true
 
 [features]
 default = ["abigen", "rustls"]
-filecoin = ["ethers-providers/filecoin"]
+filecoin = ["ethers-providers/filecoin","ethers-middleware/filecoin"]
 # workspace-wide features
 legacy = ["ethers-core/legacy", "ethers-contract/legacy"]
 celo = [
