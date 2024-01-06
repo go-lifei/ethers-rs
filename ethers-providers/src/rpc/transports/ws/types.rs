@@ -124,6 +124,7 @@ impl<'de> Deserialize<'de> for PubSubItem {
                         }
                         #[cfg(feature = "filecoin")]
                         "meta" => {
+                            use crate::rpc::common::Meta;
                             if meta.is_some() {
                                 return Err(de::Error::duplicate_field("meta"))
                             }
@@ -303,7 +304,6 @@ mod aliases {
 }
 
 pub use aliases::*;
-use crate::rpc::common::Meta;
 
 #[cfg(test)]
 mod test {
