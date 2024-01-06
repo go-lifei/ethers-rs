@@ -362,11 +362,22 @@ where
         Err(TimeLagError::Unsupported)
     }
 
+    #[cfg(not(feature = "filecoin"))]
     async fn subscribe_blocks(
         &self,
     ) -> Result<ethers_providers::SubscriptionStream<'_, Self::Provider, Block<TxHash>>, Self::Error>
     where
         Self::Provider: ethers_providers::PubsubClient,
+    {
+        Err(TimeLagError::Unsupported)
+    }
+
+    #[cfg(feature = "filecoin")]
+    async fn subscribe_blocks(
+        &self,
+    ) -> Result<ethers_providers::SubscriptionStream<'_, Self::Provider, Block<Transaction>>, Self::Error>
+        where
+            Self::Provider: ethers_providers::PubsubClient,
     {
         Err(TimeLagError::Unsupported)
     }

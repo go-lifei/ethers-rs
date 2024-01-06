@@ -64,6 +64,7 @@ tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
 
 [features]
 default = ["rustls", "etherscan"]
+filecoin = ["ethers-providers/filecoin"]
 celo = ["ethers-core/celo", "ethers-providers/celo", "ethers-signers/celo", "ethers-contract/celo"]
 etherscan = ["dep:ethers-etherscan"]
 optimism = ["ethers-core/optimism", "ethers-providers/optimism", "ethers-contract/optimism"]
