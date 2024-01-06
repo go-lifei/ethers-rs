@@ -63,7 +63,7 @@ reqwest = { workspace = true, features = ["json", "rustls"] }
 tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
 
 [features]
-default = ["rustls", "etherscan"]
+default = ["rustls"]
 filecoin = ["ethers-providers/filecoin"]
 celo = ["ethers-core/celo", "ethers-providers/celo", "ethers-signers/celo", "ethers-contract/celo"]
 etherscan = ["dep:ethers-etherscan"]
