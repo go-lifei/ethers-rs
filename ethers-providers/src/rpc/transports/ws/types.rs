@@ -303,6 +303,7 @@ mod aliases {
 }
 
 pub use aliases::*;
+use crate::rpc::common::Meta;
 
 #[cfg(test)]
 mod test {
